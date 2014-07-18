@@ -1,0 +1,41 @@
+
+all2006 <- all2006[all2006[,17]=="Year",]
+all2006 <- all2006[all2006[,15]> 20000,]
+all2006 <- all2006[all2006[,19]> 200,]
+#I also needed to create a new column for the ratio between actual wage and prevailing wage:
+  all2006 <- cbind(all2006,all2006[,15]/all2006[,19])
+#This new variable is in column 25. Since I knew I would be calculating the median in this column for many
+#subsets of the data, I defined a function to do this work:
+  medrat <- function(dataframe) {
+    return(median(dataframe[,25],na.rm=T))
+  }
+
+makecorp <- function(corpname) {
+  t <- all2006[all2006[,7]==corpname,]
+  return(t)
+}
+
+goog2006 <- makecorp("GOOGLE INC.")
+medrat(goog2006)
+ms2006 <- makecorp("MICROSOFT CORPORATION")
+medrat(ms2006)
+
+makeocc <- function(df,lowerbd,upperbd) {
+  return(df[df[,14]>=lowerbd & df[,14]<=upperbd,])
+}
+
+# for 2007 data
+prg2007 <- makeocc(all2007,"15-1021.00","15-1052.00") # programmers
+se2007 <- makeocc(all2007,"15-1030.00","15-1039.00") # s.w. engineers
+engr2007 <- makeocc(all2007,"17-2000.00","17-2999.00") # other engineers
+
+mainnatnames <- c("CHINA", "INDIA", "CANADA", "GERMANY", "UNITED KINGDOM")
+natwithindf <- function(natlist,df) {
+  for (nat in natlist) {
+    tmpdf <- df[df[,24]==nat,]
+    mr <- medrat(tmpdf)
+    cat(nat,": ",mr,"\n")
+  }
+}
+natwithindf(mainnatnames,prg2007)
+natwithindf(mainnatnames,se2007)
