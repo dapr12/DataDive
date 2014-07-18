@@ -1,0 +1,12 @@
+
+# converts a list lst to a data frame, which is the return value
+wrtlst <- function(lst) {
+  frm <- data.frame()
+  rw <- 1
+  for (key in names(lst)) {
+    frm[rw,1] <- key
+    frm[rw,2] <- lst[key]
+    rw <- rw+1
+  }
+  return(frm)
+}
