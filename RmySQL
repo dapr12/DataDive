@@ -1,0 +1,8 @@
+#devtools::install_github("jeffreyhorner/RMySQL")
+#library('DBI')
+library('RMySQL')
+install.packages('sqldf')
+library('sqldf')
+drv = dbDriver("MySQL")
+con = dbConnect(drv, user="s133cs", dbname="BaseballDataBank",
+                host="statdocs.berkeley.edu")
